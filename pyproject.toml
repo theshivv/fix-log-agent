@@ -1,0 +1,13 @@
+[project]
+name = "fix-log-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "langchain>=1.3.13",
+    "langchain-anthropic>=1.4.8",
+    "langgraph>=1.2.9",
+    "pandas>=3.0.3",
+    "python-dotenv>=1.2.2",
+]
