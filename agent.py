@@ -28,3 +28,33 @@ def query_orders(status: str ="", symbol: str ="", side:  str="") -> str:
     
     return f"{len(result)} matching orders. Showing up to 20:\n" + result.head(20).to_string(index=False)
 
+
+@tool
+def compute_stat(column: str, operation: str, status_filter : str="") -> str:
+    """Compute a statistic on a numeric column ('latency_ms, 'qty', or 'price').
+    operation is one of: mean, min, sum, count.
+    Optioanlly filter by status first (e.g. 'FILLED')    
+    """
+
+    data = df.copy()
+    if status_filter:
+        data = data[data["status"] == status_filter.upper()]
+
+    if column not in ["latency_ms", "qty", "price"]:
+        return f"Invalid column '{column}'. Use in latency_ms, qty or price."
+    
+    series = data[column]
+
+    ops = {
+        "mean" : series.mean,
+        "max" : series.max,
+        "min" : series.min,
+        "sum" : series.sum,
+        "count" : series.count
+    }
+
+    if operation not in ops:
+        return f"Invalid operation '{operation}'. Use mean, max, min, sum or count."
+    
+    return f"{operation}({column}){' where status=' + status_filter if status_filter else ''} = {ops[operation]():.2f}"
+

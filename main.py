@@ -1,5 +1,5 @@
 from generate_data import  generate_orders
-from agent import query_orders
+from agent import query_orders, compute_stat
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 import os
@@ -21,7 +21,7 @@ def main():
         api_key=os.getenv("OPENRouter_API_KEY"),
         base_url="https://openrouter.ai/api/v1",
     )
-    tools = [query_orders]
+    tools = [query_orders, compute_stat]
     agent = create_agent(llm,tools=tools)
 
     print("FIX Log Q&A Agent ready. Ask about the order log (type 'exit to quit). \n")
